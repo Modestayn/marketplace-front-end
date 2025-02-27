@@ -1,1 +1,5 @@
 @import 'tailwindcss';
+body {
+  font-family: 'Libre Franklin', serif;
+  font-weight: 400;
+}
