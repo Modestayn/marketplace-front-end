@@ -12,9 +12,11 @@
   "dependencies": {
     "@hookform/resolvers": "^4.1.2",
     "@tailwindcss/vite": "^4.0.8",
+    "@tanstack/react-form": "^0.45.1",
     "@tanstack/react-query": "^5.66.9",
     "@tanstack/react-query-devtools": "^5.66.9",
     "@tanstack/react-router": "^1.111.11",
+    "@tanstack/zod-form-adapter": "^0.42.1",
     "axios": "^1.7.9",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
