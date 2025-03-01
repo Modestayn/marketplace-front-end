@@ -2,36 +2,39 @@ import { useForm } from '@tanstack/react-form';
 import { z } from 'zod';
 import { AuthService } from '../services/AuthService';
 import { useState } from 'react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { EyeIcon, EyeOffIcon, UserIcon, MailIcon, KeyIcon } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
 
-// Extract validation schema to improve readability
+// Extract validation schema
 const schema = z.object({
   name: z.string().min(3, "Ім'я має бути мінімум 3 символи"),
   email: z.string().email('Неправильний формат форми'),
   password: z.string().min(6, 'Пароль має бути мінімум 6 символів'),
 });
 
-// Extract FieldInfo component with proper TypeScript typing
+// Field error component
 function FieldInfo({ field, customError }: { field: any; customError?: string }) {
   const hasFieldError = customError !== undefined && customError !== '';
   const hasValidationError = field.state.meta.isTouched && field.state.meta.errors.length > 0;
 
-  return (
-    <>
-      {hasFieldError ? (
-        <p className='text-red-500 text-sm'>{customError}</p>
-      ) : hasValidationError ? (
-        <p className='text-red-500 text-sm'>{field.state.meta.errors.join(', ')}</p>
-      ) : null}
-    </>
-  );
-}
+  if (!hasFieldError && !hasValidationError) return null;
 
-// Define field types for better type safety
-const formFields = [
-  { name: 'name', type: 'text', label: 'Name' },
-  { name: 'email', type: 'text', label: 'Email' },
-  { name: 'password', type: 'password', label: 'Password' },
-] as const;
+  const errorMessage = hasFieldError ? customError : field.state.meta.errors.join(', ');
+
+  return <p className='text-sm font-medium text-destructive mt-1'>{errorMessage}</p>;
+}
 
 export default function Register() {
   const [message, setMessage] = useState<string | null>(null);
@@ -76,60 +79,150 @@ export default function Register() {
   const handleTogglePassword = () => setShowPassword((prev) => !prev);
 
   return (
-    <div>
-      <h1>Registration Form</h1>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          await form.handleSubmit();
-        }}
-      >
-        {formFields.map(({ name, label }) => (
-          <div key={name} className='mb-4'>
+    <div className='flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-4'>
+      <Card className='w-full max-w-md shadow-lg'>
+        <CardHeader className='space-y-1 text-center'>
+          <CardTitle className='text-2xl font-bold text-primary'>Join Us</CardTitle>
+          <CardDescription>Create your account in seconds</CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              await form.handleSubmit();
+            }}
+            className='space-y-4'
+          >
             <form.Field
-              name={name}
+              name='name'
               children={(field) => (
-                <>
-                  <label htmlFor={field.name} className='block'>
-                    {label}:
-                  </label>
+                <div className='space-y-1'>
+                  <Label htmlFor={field.name}>Name</Label>
                   <div className='relative'>
-                    <input
+                    <UserIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground' />
+                    <Input
                       id={field.name}
                       name={field.name}
-                      type={name === 'password' && !showPassword ? 'password' : 'text'}
+                      type='text'
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      className='border p-2 w-full'
+                      className={`pl-9 ${fieldErrors[field.name] || (field.state.meta.isTouched && field.state.meta.errors.length) ? 'border-destructive' : ''}`}
+                      placeholder='Your name'
                     />
-                    {name === 'password' && (
-                      <button
-                        type='button'
-                        onClick={handleTogglePassword}
-                        className='absolute right-2 top-2 text-gray-500'
-                      >
-                        {showPassword ? 'Відобразити' : 'Скрити'}
-                      </button>
-                    )}
                   </div>
-                  <FieldInfo field={field} customError={fieldErrors[name]} />
-                </>
+                  <FieldInfo
+                    field={field}
+                    fieldName={field.name}
+                    customError={fieldErrors[field.name]}
+                  />
+                </div>
               )}
             />
+
+            <form.Field
+              name='email'
+              children={(field) => (
+                <div className='space-y-1'>
+                  <Label htmlFor={field.name}>Email</Label>
+                  <div className='relative'>
+                    <MailIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground' />
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type='text'
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      className={`pl-9 ${fieldErrors[field.name] || (field.state.meta.isTouched && field.state.meta.errors.length) ? 'border-destructive' : ''}`}
+                      placeholder='Your email'
+                    />
+                  </div>
+                  <FieldInfo
+                    field={field}
+                    fieldName={field.name}
+                    customError={fieldErrors[field.name]}
+                  />
+                </div>
+              )}
+            />
+
+            <form.Field
+              name='password'
+              children={(field) => (
+                <div className='space-y-1'>
+                  <Label htmlFor={field.name}>Password</Label>
+                  <div className='relative'>
+                    <KeyIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground' />
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type={showPassword ? 'text' : 'password'}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      className={`pl-9 ${fieldErrors[field.name] || (field.state.meta.isTouched && field.state.meta.errors.length) ? 'border-destructive' : ''}`}
+                      placeholder='Your password'
+                    />
+                    <Button
+                      type='button'
+                      variant='ghost'
+                      size='icon'
+                      className='absolute right-0 top-0 h-full px-3 text-muted-foreground hover:text-foreground'
+                      onClick={handleTogglePassword}
+                    >
+                      {showPassword ? (
+                        <EyeOffIcon className='h-4 w-4' />
+                      ) : (
+                        <EyeIcon className='h-4 w-4' />
+                      )}
+                    </Button>
+                  </div>
+                  <FieldInfo
+                    field={field}
+                    fieldName={field.name}
+                    customError={fieldErrors[field.name]}
+                  />
+                </div>
+              )}
+            />
+
+            <Button
+              type='submit'
+              className='w-full'
+              disabled={!form.state.canSubmit || form.state.isSubmitting}
+            >
+              {form.state.isSubmitting ? 'Creating Account...' : 'Create Account'}
+            </Button>
+          </form>
+
+          {message && (
+            <Alert className='mt-4 border-green-500 text-green-700 bg-green-50'>
+              <AlertDescription>{message}</AlertDescription>
+            </Alert>
+          )}
+
+          {generalError && (
+            <Alert className='mt-4 border-destructive bg-destructive/10'>
+              <AlertDescription>{generalError}</AlertDescription>
+            </Alert>
+          )}
+        </CardContent>
+
+        <CardFooter className='flex flex-col space-y-4 mt-4'>
+          <div className='text-sm text-center text-muted-foreground'>
+            Already have an account?{' '}
+            <Link to='/login' className='text-primary hover:underline font-medium'>
+              Sign in
+            </Link>
           </div>
-        ))}
-        <button
-          type='submit'
-          disabled={!form.state.canSubmit || form.state.isSubmitting}
-          className='bg-blue-500 text-white p-2 rounded'
-        >
-          {form.state.isSubmitting ? 'Submitting...' : 'Register'}
-        </button>
-      </form>
-      {message && <p className='text-green-500'>{message}</p>}
-      {generalError && <p className='text-red-500 whitespace-pre-wrap'>{generalError}</p>}
+          <p className='text-xs text-center text-muted-foreground'>
+            By signing up, you agree to our Terms of Service and Privacy Policy
+          </p>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
