@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,17 +12,18 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import {
+  ChevronDown,
+  Grid,
+  Home,
+  LogIn,
+  Menu,
+  Package,
   Search,
   ShoppingCart,
-  Menu,
-  LogIn,
   UserPlus,
-  Home,
-  Package,
-  Grid,
-  ChevronDown,
 } from 'lucide-react';
 import CartButton from '@/components/Cart.tsx';
+import ChangeLng from '@/components/ChangeLng.tsx';
 
 // Layout component to handle the navbar and content spacing
 export const Layout = ({ children }) => {
@@ -33,31 +35,8 @@ export const Layout = ({ children }) => {
   );
 };
 
-// Sample category data
-const categories = [
-  {
-    name: 'Electronics',
-    description: 'Gadgets, phones, computers and more',
-    subcategories: ['Smartphones', 'Laptops', 'Audio', 'Accessories'],
-  },
-  {
-    name: 'Home & Kitchen',
-    description: 'Everything for your living space',
-    subcategories: ['Furniture', 'Appliances', 'Decor', 'Cookware'],
-  },
-  {
-    name: 'Fashion',
-    description: 'Clothing, shoes, and accessories',
-    subcategories: ["Men's", "Women's", 'Kids', 'Footwear'],
-  },
-  {
-    name: 'Beauty & Health',
-    description: 'Personal care and wellness products',
-    subcategories: ['Skincare', 'Makeup', 'Haircare', 'Fitness'],
-  },
-];
-
 const Navbar = () => {
+  const { t } = useTranslation();
   const isRegistered = false;
   const [scrolled, setScrolled] = useState(false);
 
@@ -77,6 +56,50 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+  // Sample category data
+
+  const categories = [
+    {
+      name: t('categories.electronics.name'),
+      description: t('categories.electronics.description'),
+      subcategories: [
+        t('categories.electronics.subcategories.0'),
+        t('categories.electronics.subcategories.1'),
+        t('categories.electronics.subcategories.2'),
+        t('categories.electronics.subcategories.3'),
+      ],
+    },
+    {
+      name: t('categories.home_kitchen.name'),
+      description: t('categories.home_kitchen.description'),
+      subcategories: [
+        t('categories.home_kitchen.subcategories.0'),
+        t('categories.home_kitchen.subcategories.1'),
+        t('categories.home_kitchen.subcategories.2'),
+        t('categories.home_kitchen.subcategories.3'),
+      ],
+    },
+    {
+      name: t('categories.fashion.name'),
+      description: t('categories.fashion.description'),
+      subcategories: [
+        t('categories.fashion.subcategories.0'),
+        t('categories.fashion.subcategories.1'),
+        t('categories.fashion.subcategories.2'),
+        t('categories.fashion.subcategories.3'),
+      ],
+    },
+    {
+      name: t('categories.beauty_health.name'),
+      description: t('categories.beauty_health.description'),
+      subcategories: [
+        t('categories.beauty_health.subcategories.0'),
+        t('categories.beauty_health.subcategories.1'),
+        t('categories.beauty_health.subcategories.2'),
+        t('categories.beauty_health.subcategories.3'),
+      ],
+    },
+  ];
 
   return (
     <header
@@ -100,7 +123,7 @@ const Navbar = () => {
                 to='/'
                 className='flex items-center text-base font-medium text-foreground hover:text-primary transition-colors'
               >
-                Home
+                {t('navbar.home')}
               </Link>
 
               {/* Products Link */}
@@ -108,7 +131,7 @@ const Navbar = () => {
                 to='/products'
                 className='flex items-center text-base font-medium text-foreground hover:text-primary transition-colors'
               >
-                Products
+                {t('navbar.products')}
               </Link>
 
               {/* Categories Dropdown */}
@@ -116,7 +139,7 @@ const Navbar = () => {
                 <NavigationMenuList>
                   <NavigationMenuItem>
                     <NavigationMenuTrigger className='flex items-center text-base font-medium text-foreground hover:text-primary transition-colors -ml-5'>
-                      Categories
+                      {t('navbar.categories')}
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <div className='grid grid-cols-2 gap-3 p-4 w-[500px]'>
@@ -148,7 +171,7 @@ const Navbar = () => {
                           to='/categories'
                           className='text-sm text-muted-foreground hover:text-primary flex items-center'
                         >
-                          View all categories
+                          {t('navbar.view_all_categories')}
                           <ChevronDown className='h-4 w-4 ml-1 rotate-270' />
                         </Link>
                       </div>
@@ -160,9 +183,10 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Search */}
+          <ChangeLng />
           <div className='hidden md:flex relative max-w-sm w-full mx-4'>
             <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground' />
-            <Input placeholder='Search products...' className='pl-9' />
+            <Input placeholder={t('navbar.search_placeholder')} className='pl-9' />
           </div>
 
           {/* Desktop Auth and Cart */}
@@ -171,7 +195,7 @@ const Navbar = () => {
               <Button variant='outline' size='sm' asChild>
                 <Link to='/login' className='flex items-center'>
                   <LogIn className='w-4 h-4 mr-2' />
-                  Login
+                  {t('navbar.loginBtn')}
                 </Link>
               </Button>
             ) : (
@@ -179,13 +203,13 @@ const Navbar = () => {
                 <Button variant='outline' size='sm' asChild>
                   <Link to='/login' className='flex items-center'>
                     <LogIn className='w-4 h-4 mr-2' />
-                    Login
+                    {t('navbar.loginBtn')}
                   </Link>
                 </Button>
                 <Button size='sm' asChild>
                   <Link to='/register' className='flex items-center'>
                     <UserPlus className='w-4 h-4 mr-2' />
-                    Register
+                    {t('navbar.registerBtn')}
                   </Link>
                 </Button>
               </>
@@ -210,7 +234,7 @@ const Navbar = () => {
                   <div>
                     <div className='relative'>
                       <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground' />
-                      <Input placeholder='Search products...' className='pl-9' />
+                      <Input placeholder={t('navbar.search_placeholder')} className='pl-9' />
                     </div>
                   </div>
 
@@ -220,21 +244,21 @@ const Navbar = () => {
                       className='flex items-center py-2 text-foreground hover:text-primary transition-colors'
                     >
                       <Home className='w-4 h-4 mr-2' />
-                      Home
+                      {t('navbar.home')}
                     </Link>
                     <Link
                       to='/products'
                       className='flex items-center py-2 text-foreground hover:text-primary transition-colors'
                     >
                       <Package className='w-4 h-4 mr-2' />
-                      Products
+                      {t('navbar.products')}
                     </Link>
 
                     {/* Categories in mobile */}
                     <div className='pt-2 pb-1'>
                       <div className='flex items-center py-2 text-foreground'>
                         <Grid className='w-4 h-4 mr-2' />
-                        <span className='font-medium'>Categories</span>
+                        <span className='font-medium'>{t('navbar.categories')}</span>
                       </div>
                       <div className='ml-6 border-l pl-2 border-border/50'>
                         {categories.map((category) => (
@@ -250,7 +274,7 @@ const Navbar = () => {
                           to='/categories'
                           className='flex items-center py-1.5 text-muted-foreground hover:text-primary transition-colors text-sm font-medium'
                         >
-                          View all categories
+                          {t('navbar.view_all_categories')}
                         </Link>
                       </div>
                     </div>
@@ -261,7 +285,7 @@ const Navbar = () => {
                       <Button variant='outline' className='w-full' asChild>
                         <Link to='/login' className='flex items-center justify-center'>
                           <LogIn className='w-4 h-4 mr-2' />
-                          Login
+                          {t('navbar.loginBtn')}
                         </Link>
                       </Button>
                     ) : (
@@ -269,13 +293,13 @@ const Navbar = () => {
                         <Button variant='outline' className='w-full' asChild>
                           <Link to='/login' className='flex items-center justify-center'>
                             <LogIn className='w-4 h-4 mr-2' />
-                            Login
+                            {t('navbar.loginBtn')}
                           </Link>
                         </Button>
                         <Button className='w-full' asChild>
                           <Link to='/register' className='flex items-center justify-center'>
                             <UserPlus className='w-4 h-4 mr-2' />
-                            Register
+                            {t('navbar.registerBtn')}
                           </Link>
                         </Button>
                       </>

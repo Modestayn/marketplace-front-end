@@ -1,9 +1,11 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { useMutation, useQuery } from '@tanstack/react-query';
+
+const apiBaseURL = 'http://your-api-url.com';
 
 const api = axios.create({
-  baseURL: 'http://your-api-url.com',
-  timeout: 10000,
+  baseURL: apiBaseURL,
+  headers: { 'Content-Type': 'application/json' },
 });
 
 type IRegisterResponse = {
@@ -13,13 +15,10 @@ type IRegisterResponse = {
 export const AuthService = {
   checkUserExists: async (email: string): Promise<boolean> => {
     try {
-      const response = await api.get(`/users/check-email?email=${email}`);
+      const response = await api.get(`/users/check-email`, { params: { email } });
       return response.data.exists;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error('Помилка перевірки наявності користувача: ' + error.message);
-      }
-      throw new Error('Помилка перевірки наявності користувача');
+      throw new Error('Помилка перевірки наявності користувача: ' + (error as Error).message);
     }
   },
 
@@ -32,10 +31,7 @@ export const AuthService = {
       const response = await api.post('/users/register', data);
       return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.message || 'Помилка реєстрації: ' + error.message);
-      }
-      throw new Error('Помилка реєстрації');
+      throw new Error('Помилка реєстрації: ' + (error as Error).message);
     }
   },
 };
