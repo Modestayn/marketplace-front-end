@@ -113,11 +113,7 @@ export default function Register() {
                       placeholder='Your name'
                     />
                   </div>
-                  <FieldInfo
-                    field={field}
-                    fieldName={field.name}
-                    customError={fieldErrors[field.name]}
-                  />
+                  <FieldInfo field={field} customError={fieldErrors[field.name]} />
                 </div>
               )}
             />
@@ -140,11 +136,7 @@ export default function Register() {
                       placeholder='Your email'
                     />
                   </div>
-                  <FieldInfo
-                    field={field}
-                    fieldName={field.name}
-                    customError={fieldErrors[field.name]}
-                  />
+                  <FieldInfo field={field} customError={fieldErrors[field.name]} />
                 </div>
               )}
             />
@@ -180,11 +172,7 @@ export default function Register() {
                       )}
                     </Button>
                   </div>
-                  <FieldInfo
-                    field={field}
-                    fieldName={field.name}
-                    customError={fieldErrors[field.name]}
-                  />
+                  <FieldInfo field={field} customError={fieldErrors[field.name]} />
                 </div>
               )}
             />
