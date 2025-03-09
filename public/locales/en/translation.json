@@ -1,0 +1,36 @@
+{
+  "welcome": "Welcome",
+  "description": "This is an internationalization example",
+  "change_language": "Change language",
+  "navbar": {
+    "home": "Home",
+    "products": "Products",
+    "categories": "Categories",
+    "view_all_categories": "View all categories",
+    "search_placeholder": "Search products...",
+    "registerBtn": "Register",
+    "loginBtn": "Login"
+  },
+  "categories": {
+    "electronics": {
+      "name": "Electronics",
+      "description": "Gadgets, phones, computers and more",
+      "subcategories": ["Smartphones", "Laptops", "Audio", "Accessories"]
+    },
+    "home_kitchen": {
+      "name": "Home & Kitchen",
+      "description": "Everything for your living space",
+      "subcategories": ["Furniture", "Appliances", "Decor", "Cookware"]
+    },
+    "fashion": {
+      "name": "Fashion",
+      "description": "Clothing, shoes, and accessories",
+      "subcategories": ["Men's", "Women's", "Kids", "Footwear"]
+    },
+    "beauty_health": {
+      "name": "Beauty & Health",
+      "description": "Personal care and wellness products",
+      "subcategories": ["Skincare", "Makeup", "Haircare", "Fitness"]
+    }
+  }
+}
