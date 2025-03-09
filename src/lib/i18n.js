@@ -1,0 +1,25 @@
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import HttpApi from 'i18next-http-backend';
+import LanguageDetector from 'i18next-browser-languagedetector';
+
+i18n
+  .use(HttpApi)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    lng: 'ua',
+    fallbackLng: 'ua',
+    supportedLngs: ['ua', 'en'],
+    debug: true,
+    interpolation: { escapeValue: false },
+    backend: {
+      loadPath: '/locales/{{lng}}/translation.json',
+    },
+    detection: {
+      order: ['navigator', 'cookie', 'localStorage'],
+      caches: ['cookie', 'localStorage'],
+    },
+  });
+
+export default i18n;
