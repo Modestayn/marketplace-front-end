@@ -8,14 +8,15 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    lng: 'ua',
-    fallbackLng: 'ua',
-    supportedLngs: ['ua', 'en'],
-    debug: true,
+    lng: 'uk',
+    fallbackLng: 'uk',
+    supportedLngs: ['uk', 'en'],
+    debug: import.meta.env.DEV,
     interpolation: { escapeValue: false },
     backend: {
       loadPath: '/locales/{{lng}}/translation.json',
     },
+    load: 'languageOnly',
     detection: {
       order: ['navigator', 'cookie', 'localStorage'],
       caches: ['cookie', 'localStorage'],

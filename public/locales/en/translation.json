@@ -32,5 +32,46 @@
       "description": "Personal care and wellness products",
       "subcategories": ["Skincare", "Makeup", "Haircare", "Fitness"]
     }
+  },
+  "products": {
+    "title": "Products",
+    "empty": "No products available",
+    "loading_error": "Failed to load products",
+    "in_stock": "In Stock",
+    "out_of_stock": "Out of Stock",
+    "add_to_cart": "Add to Cart",
+    "product_id": "Product ID"
+  },
+  "register": {
+    "title": "Join Us",
+    "description": "Create your account in seconds",
+    "name": {
+      "label": "Name",
+      "placeholder": "Your name",
+      "validation": {
+        "min_length": "Name must be at least 3 characters"
+      }
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Your email",
+      "validation": {
+        "invalid_format": "Invalid email format"
+      }
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Your password",
+      "validation": {
+        "min_length": "Password must be at least 6 characters"
+      }
+    },
+    "submit": {
+      "creating": "Creating Account...",
+      "create": "Create Account"
+    },
+    "login_prompt": "Already have an account?",
+    "login_link": "Sign in",
+    "terms": "By signing up, you agree to our Terms of Service and Privacy Policy"
   }
 }

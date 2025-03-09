@@ -2,6 +2,7 @@ import { useForm } from '@tanstack/react-form';
 import { z } from 'zod';
 import { AuthService } from '../services/AuthService';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Card,
   CardContent,
@@ -17,13 +18,6 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { EyeIcon, EyeOffIcon, UserIcon, MailIcon, KeyIcon } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 
-// Extract validation schema
-const schema = z.object({
-  name: z.string().min(3, "Ім'я має бути мінімум 3 символи"),
-  email: z.string().email('Неправильний формат форми'),
-  password: z.string().min(6, 'Пароль має бути мінімум 6 символів'),
-});
-
 // Field error component
 function FieldInfo({ field, customError }: { field: any; customError?: string }) {
   const hasFieldError = customError !== undefined && customError !== '';
@@ -37,10 +31,18 @@ function FieldInfo({ field, customError }: { field: any; customError?: string })
 }
 
 export default function Register() {
+  const { t } = useTranslation();
   const [message, setMessage] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+
+  // Extract validation schema with translations
+  const schema = z.object({
+    name: z.string().min(3, t('register.name.validation.min_length')),
+    email: z.string().email(t('register.email.validation.invalid_format')),
+    password: z.string().min(6, t('register.password.validation.min_length')),
+  });
 
   const form = useForm({
     defaultValues: {
@@ -82,8 +84,8 @@ export default function Register() {
     <div className='flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-4'>
       <Card className='w-full max-w-md shadow-lg'>
         <CardHeader className='space-y-1 text-center'>
-          <CardTitle className='text-2xl font-bold text-primary'>Join Us</CardTitle>
-          <CardDescription>Create your account in seconds</CardDescription>
+          <CardTitle className='text-2xl font-bold text-primary'>{t('register.title')}</CardTitle>
+          <CardDescription>{t('register.description')}</CardDescription>
         </CardHeader>
 
         <CardContent>
@@ -99,7 +101,7 @@ export default function Register() {
               name='name'
               children={(field) => (
                 <div className='space-y-1'>
-                  <Label htmlFor={field.name}>Name</Label>
+                  <Label htmlFor={field.name}>{t('register.name.label')}</Label>
                   <div className='relative'>
                     <UserIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground' />
                     <Input
@@ -110,7 +112,7 @@ export default function Register() {
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       className={`pl-9 ${fieldErrors[field.name] || (field.state.meta.isTouched && field.state.meta.errors.length) ? 'border-destructive' : ''}`}
-                      placeholder='Your name'
+                      placeholder={t('register.name.placeholder')}
                     />
                   </div>
                   <FieldInfo field={field} customError={fieldErrors[field.name]} />
@@ -122,7 +124,7 @@ export default function Register() {
               name='email'
               children={(field) => (
                 <div className='space-y-1'>
-                  <Label htmlFor={field.name}>Email</Label>
+                  <Label htmlFor={field.name}>{t('register.email.label')}</Label>
                   <div className='relative'>
                     <MailIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground' />
                     <Input
@@ -133,7 +135,7 @@ export default function Register() {
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       className={`pl-9 ${fieldErrors[field.name] || (field.state.meta.isTouched && field.state.meta.errors.length) ? 'border-destructive' : ''}`}
-                      placeholder='Your email'
+                      placeholder={t('register.email.placeholder')}
                     />
                   </div>
                   <FieldInfo field={field} customError={fieldErrors[field.name]} />
@@ -145,7 +147,7 @@ export default function Register() {
               name='password'
               children={(field) => (
                 <div className='space-y-1'>
-                  <Label htmlFor={field.name}>Password</Label>
+                  <Label htmlFor={field.name}>{t('register.password.label')}</Label>
                   <div className='relative'>
                     <KeyIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground' />
                     <Input
@@ -156,7 +158,7 @@ export default function Register() {
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       className={`pl-9 ${fieldErrors[field.name] || (field.state.meta.isTouched && field.state.meta.errors.length) ? 'border-destructive' : ''}`}
-                      placeholder='Your password'
+                      placeholder={t('register.password.placeholder')}
                     />
                     <Button
                       type='button'
@@ -182,7 +184,9 @@ export default function Register() {
               className='w-full'
               disabled={!form.state.canSubmit || form.state.isSubmitting}
             >
-              {form.state.isSubmitting ? 'Creating Account...' : 'Create Account'}
+              {form.state.isSubmitting
+                ? t('register.submit.creating')
+                : t('register.submit.create')}
             </Button>
           </form>
 
@@ -201,14 +205,12 @@ export default function Register() {
 
         <CardFooter className='flex flex-col space-y-4 mt-4'>
           <div className='text-sm text-center text-muted-foreground'>
-            Already have an account?{' '}
+            {t('register.login_prompt')}{' '}
             <Link to='/login' className='text-primary hover:underline font-medium'>
-              Sign in
+              {t('register.login_link')}
             </Link>
           </div>
-          <p className='text-xs text-center text-muted-foreground'>
-            By signing up, you agree to our Terms of Service and Privacy Policy
-          </p>
+          <p className='text-xs text-center text-muted-foreground'>{t('register.terms')}</p>
         </CardFooter>
       </Card>
     </div>
