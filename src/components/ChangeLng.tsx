@@ -1,24 +1,30 @@
 import { useTranslation } from 'react-i18next';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
-const LanguageSwitcher = () => {
+export default function LanguageSwitcher() {
   const { i18n } = useTranslation();
 
-  return (
-    <section className='flex justify-center items-center'>
-      <select
-        value={i18n.language}
-        onChange={(e) => i18n.changeLanguage(e.target.value)}
-        className='appearance-none bg-transparent border border-gray-400 text-gray-700 px-2 py-2 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400'
-      >
-        <option className='bg-white text-black' value='ua'>
-          🇺🇦 UA
-        </option>
-        <option className='bg-white text-black' value='en'>
-          🇬🇧 EN
-        </option>
-      </select>
-    </section>
-  );
-};
+  const changeLanguage = (value: string) => {
+    i18n.changeLanguage(value);
+  };
 
-export default LanguageSwitcher;
+  return (
+    <div className='flex items-center gap-2'>
+      <Select defaultValue={i18n.language} onValueChange={changeLanguage}>
+        <SelectTrigger className='w-[120px]'>
+          <SelectValue placeholder='Language' />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value='en'>English</SelectItem>
+          <SelectItem value='uk'>Українська</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
