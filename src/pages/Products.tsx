@@ -10,17 +10,18 @@ import {
 } from '@/components/ui/card';
 import { Loading } from '@/components/ui/products/Loading';
 import { useTranslation } from 'react-i18next';
+import { useCart } from '../context/CartContext';
 
 export default function Products() {
   const { t } = useTranslation();
+  const { addToCart } = useCart();
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['products'],
     queryFn: fetchProducts,
   });
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  if (isLoading) return <Loading />;
 
   if (error) {
     return (
@@ -43,7 +44,6 @@ export default function Products() {
   return (
     <div className='container mx-auto py-8'>
       <h1 className='text-2xl font-bold mb-6'>{t('products.title')}</h1>
-
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
         {data.data.map((product) => (
           <Card key={product.id} className='h-full flex flex-col'>
@@ -70,7 +70,10 @@ export default function Products() {
                     maximumFractionDigits: 2,
                   })}
                 </span>
-                <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded'>
+                <button
+                  className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded'
+                  onClick={() => addToCart(product)}
+                >
                   {t('products.add_to_cart')}
                 </button>
               </div>
