@@ -73,5 +73,13 @@
     "login_prompt": "Already have an account?",
     "login_link": "Sign in",
     "terms": "By signing up, you agree to our Terms of Service and Privacy Policy"
+  },
+  "cart": {
+    "yourCart": "Your Cart ({{itemCount}} items)",
+    "emptyCart": "Your cart is empty",
+    "subtotal": "Subtotal",
+    "viewCart": "View Cart",
+    "checkout": "Checkout",
+    "continueShopping": "Continue shopping"
   }
 }
