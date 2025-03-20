@@ -11,7 +11,7 @@ i18n
     lng: 'uk',
     fallbackLng: 'uk',
     supportedLngs: ['uk', 'en'],
-    debug: import.meta.env.DEV,
+    debug: import.meta.env.VITE_DEBUG_MODE,
     interpolation: { escapeValue: false },
     backend: {
       loadPath: '/locales/{{lng}}/translation.json',

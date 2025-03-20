@@ -4,30 +4,23 @@ import { useTranslation } from 'react-i18next';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
-import {
-  ChevronDown,
-  Grid,
-  Home,
-  LogIn,
-  Menu,
-  Package,
-  Search,
-  ShoppingCart,
-  UserPlus,
-} from 'lucide-react';
+// import {
+//   NavigationMenu,
+//   NavigationMenuContent,
+//   NavigationMenuItem,
+//   NavigationMenuList,
+//   NavigationMenuTrigger,
+// } from '@/components/ui/navigation-menu';
+// import { ChevronDown, Grid } from 'lucide-react';
+import { Home, LogIn, Menu, Package, Search, UserPlus } from 'lucide-react';
 import CartButton from '@/components/Cart.tsx';
 import ChangeLng from '@/components/ChangeLng.tsx';
+import { useAuth } from '@/hooks/useAuth.ts';
+import { UserDropdown } from '@/components/UserDropdown';
 
 const Navbar = () => {
   const { t } = useTranslation();
-  const isRegistered = false;
+  const { isAuthenticated, logout } = useAuth();
   const [scrolled, setScrolled] = useState(false);
 
   // Handle navbar background change on scroll
@@ -46,50 +39,50 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  // Sample category data
 
-  const categories = [
-    {
-      name: t('categories.electronics.name'),
-      description: t('categories.electronics.description'),
-      subcategories: [
-        t('categories.electronics.subcategories.0'),
-        t('categories.electronics.subcategories.1'),
-        t('categories.electronics.subcategories.2'),
-        t('categories.electronics.subcategories.3'),
-      ],
-    },
-    {
-      name: t('categories.home_kitchen.name'),
-      description: t('categories.home_kitchen.description'),
-      subcategories: [
-        t('categories.home_kitchen.subcategories.0'),
-        t('categories.home_kitchen.subcategories.1'),
-        t('categories.home_kitchen.subcategories.2'),
-        t('categories.home_kitchen.subcategories.3'),
-      ],
-    },
-    {
-      name: t('categories.fashion.name'),
-      description: t('categories.fashion.description'),
-      subcategories: [
-        t('categories.fashion.subcategories.0'),
-        t('categories.fashion.subcategories.1'),
-        t('categories.fashion.subcategories.2'),
-        t('categories.fashion.subcategories.3'),
-      ],
-    },
-    {
-      name: t('categories.beauty_health.name'),
-      description: t('categories.beauty_health.description'),
-      subcategories: [
-        t('categories.beauty_health.subcategories.0'),
-        t('categories.beauty_health.subcategories.1'),
-        t('categories.beauty_health.subcategories.2'),
-        t('categories.beauty_health.subcategories.3'),
-      ],
-    },
-  ];
+  // Sample category data
+  // const categories = [
+  //   {
+  //     name: t('categories.electronics.name'),
+  //     description: t('categories.electronics.description'),
+  //     subcategories: [
+  //       t('categories.electronics.subcategories.0'),
+  //       t('categories.electronics.subcategories.1'),
+  //       t('categories.electronics.subcategories.2'),
+  //       t('categories.electronics.subcategories.3'),
+  //     ],
+  //   },
+  //   {
+  //     name: t('categories.home_kitchen.name'),
+  //     description: t('categories.home_kitchen.description'),
+  //     subcategories: [
+  //       t('categories.home_kitchen.subcategories.0'),
+  //       t('categories.home_kitchen.subcategories.1'),
+  //       t('categories.home_kitchen.subcategories.2'),
+  //       t('categories.home_kitchen.subcategories.3'),
+  //     ],
+  //   },
+  //   {
+  //     name: t('categories.fashion.name'),
+  //     description: t('categories.fashion.description'),
+  //     subcategories: [
+  //       t('categories.fashion.subcategories.0'),
+  //       t('categories.fashion.subcategories.1'),
+  //       t('categories.fashion.subcategories.2'),
+  //       t('categories.fashion.subcategories.3'),
+  //     ],
+  //   },
+  //   {
+  //     name: t('categories.beauty_health.name'),
+  //     description: t('categories.beauty_health.description'),
+  //     subcategories: [
+  //       t('categories.beauty_health.subcategories.0'),
+  //       t('categories.beauty_health.subcategories.1'),
+  //       t('categories.beauty_health.subcategories.2'),
+  //       t('categories.beauty_health.subcategories.3'),
+  //     ],
+  //   },
+  // ];
 
   return (
     <header
@@ -101,7 +94,7 @@ const Navbar = () => {
         <div className='flex items-center justify-between'>
           {/* Logo */}
           <Link to='/' className='flex items-center'>
-            <ShoppingCart className='h-5 w-5 mr-2 text-primary' />
+            <Package className='h-5 w-5 mr-2 text-primary' />
             <span className='font-bold text-xl text-foreground'>MarketPlace</span>
           </Link>
 
@@ -125,50 +118,50 @@ const Navbar = () => {
               </Link>
 
               {/* Categories Dropdown */}
-              <NavigationMenu>
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className='flex items-center text-base font-medium text-foreground hover:text-primary transition-colors -ml-5'>
-                      {t('navbar.categories')}
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className='grid grid-cols-2 gap-3 p-4 w-[500px]'>
-                        {categories.map((category) => (
-                          <div key={category.name} className='space-y-2'>
-                            <Link
-                              to={`/categories/${category.name.toLowerCase().replace(/ /g, '-')}`}
-                              className='font-medium text-base hover:text-primary transition-colors block'
-                            >
-                              {category.name}
-                            </Link>
-                            <p className='text-xs text-muted-foreground'>{category.description}</p>
-                            <div className='space-y-1'>
-                              {category.subcategories.map((subcategory) => (
-                                <Link
-                                  key={subcategory}
-                                  to={`/categories/${category.name.toLowerCase().replace(/ /g, '-')}/${subcategory.toLowerCase().replace(/ /g, '-')}`}
-                                  className='text-sm hover:text-primary transition-colors block'
-                                >
-                                  {subcategory}
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      <div className='bg-muted/50 p-2 flex justify-end'>
-                        <Link
-                          to='/categories'
-                          className='text-sm text-muted-foreground hover:text-primary flex items-center'
-                        >
-                          {t('navbar.view_all_categories')}
-                          <ChevronDown className='h-4 w-4 ml-1 rotate-270' />
-                        </Link>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
+              {/*<NavigationMenu>*/}
+              {/*  <NavigationMenuList>*/}
+              {/*    <NavigationMenuItem>*/}
+              {/*      <NavigationMenuTrigger className='flex items-center text-base font-medium text-foreground hover:text-primary transition-colors -ml-5'>*/}
+              {/*        {t('navbar.categories')}*/}
+              {/*      </NavigationMenuTrigger>*/}
+              {/*      <NavigationMenuContent>*/}
+              {/*        <div className='grid grid-cols-2 gap-3 p-4 w-[500px]'>*/}
+              {/*          {categories.map((category) => (*/}
+              {/*            <div key={category.name} className='space-y-2'>*/}
+              {/*              <Link*/}
+              {/*                to={`/categories/${category.name.toLowerCase().replace(/ /g, '-')}`}*/}
+              {/*                className='font-medium text-base hover:text-primary transition-colors block'*/}
+              {/*              >*/}
+              {/*                {category.name}*/}
+              {/*              </Link>*/}
+              {/*              <p className='text-xs text-muted-foreground'>{category.description}</p>*/}
+              {/*              <div className='space-y-1'>*/}
+              {/*                {category.subcategories.map((subcategory) => (*/}
+              {/*                  <Link*/}
+              {/*                    key={subcategory}*/}
+              {/*                    to={`/categories/${category.name.toLowerCase().replace(/ /g, '-')}/${subcategory.toLowerCase().replace(/ /g, '-')}`}*/}
+              {/*                    className='text-sm hover:text-primary transition-colors block'*/}
+              {/*                  >*/}
+              {/*                    {subcategory}*/}
+              {/*                  </Link>*/}
+              {/*                ))}*/}
+              {/*              </div>*/}
+              {/*            </div>*/}
+              {/*          ))}*/}
+              {/*        </div>*/}
+              {/*        <div className='bg-muted/50 p-2 flex justify-end'>*/}
+              {/*          <Link*/}
+              {/*            to='/categories'*/}
+              {/*            className='text-sm text-muted-foreground hover:text-primary flex items-center'*/}
+              {/*          >*/}
+              {/*            {t('navbar.view_all_categories')}*/}
+              {/*            <ChevronDown className='h-4 w-4 ml-1 rotate-270' />*/}
+              {/*          </Link>*/}
+              {/*        </div>*/}
+              {/*      </NavigationMenuContent>*/}
+              {/*    </NavigationMenuItem>*/}
+              {/*  </NavigationMenuList>*/}
+              {/*</NavigationMenu>*/}
             </nav>
           </div>
 
@@ -181,13 +174,8 @@ const Navbar = () => {
 
           {/* Desktop Auth and Cart */}
           <div className='hidden md:flex items-center gap-2'>
-            {isRegistered ? (
-              <Button variant='outline' size='sm' asChild>
-                <Link to='/login' className='flex items-center'>
-                  <LogIn className='w-4 h-4 mr-2' />
-                  {t('navbar.loginBtn')}
-                </Link>
-              </Button>
+            {isAuthenticated ? (
+              <UserDropdown />
             ) : (
               <>
                 <Button variant='outline' size='sm' asChild>
@@ -205,7 +193,6 @@ const Navbar = () => {
               </>
             )}
 
-            {/* Cart - Replace with CartButton component */}
             <CartButton />
           </div>
 
@@ -245,38 +232,36 @@ const Navbar = () => {
                     </Link>
 
                     {/* Categories in mobile */}
-                    <div className='pt-2 pb-1'>
-                      <div className='flex items-center py-2 text-foreground'>
-                        <Grid className='w-4 h-4 mr-2' />
-                        <span className='font-medium'>{t('navbar.categories')}</span>
-                      </div>
-                      <div className='ml-6 border-l pl-2 border-border/50'>
-                        {categories.map((category) => (
-                          <Link
-                            key={category.name}
-                            to={`/categories/${category.name.toLowerCase().replace(/ /g, '-')}`}
-                            className='flex items-center py-1.5 text-foreground hover:text-primary transition-colors text-sm'
-                          >
-                            {category.name}
-                          </Link>
-                        ))}
-                        <Link
-                          to='/categories'
-                          className='flex items-center py-1.5 text-muted-foreground hover:text-primary transition-colors text-sm font-medium'
-                        >
-                          {t('navbar.view_all_categories')}
-                        </Link>
-                      </div>
-                    </div>
+                    {/*<div className='pt-2 pb-1'>*/}
+                    {/*  <div className='flex items-center py-2 text-foreground'>*/}
+                    {/*    <Grid className='w-4 h-4 mr-2' />*/}
+                    {/*    <span className='font-medium'>{t('navbar.categories')}</span>*/}
+                    {/*  </div>*/}
+                    {/*  <div className='ml-6 border-l pl-2 border-border/50'>*/}
+                    {/*    {categories.map((category) => (*/}
+                    {/*      <Link*/}
+                    {/*        key={category.name}*/}
+                    {/*        to={`/categories/${category.name.toLowerCase().replace(/ /g, '-')}`}*/}
+                    {/*        className='flex items-center py-1.5 text-foreground hover:text-primary transition-colors text-sm'*/}
+                    {/*      >*/}
+                    {/*        {category.name}*/}
+                    {/*      </Link>*/}
+                    {/*    ))}*/}
+                    {/*    <Link*/}
+                    {/*      to='/categories'*/}
+                    {/*      className='flex items-center py-1.5 text-muted-foreground hover:text-primary transition-colors text-sm font-medium'*/}
+                    {/*    >*/}
+                    {/*      {t('navbar.view_all_categories')}*/}
+                    {/*    </Link>*/}
+                    {/*  </div>*/}
+                    {/*</div>*/}
                   </div>
 
                   <div className='mt-auto space-y-4 pt-4 border-t'>
-                    {isRegistered ? (
-                      <Button variant='outline' className='w-full' asChild>
-                        <Link to='/login' className='flex items-center justify-center'>
-                          <LogIn className='w-4 h-4 mr-2' />
-                          {t('navbar.loginBtn')}
-                        </Link>
+                    {isAuthenticated ? (
+                      <Button variant='outline' className='w-full' onClick={() => logout()}>
+                        <LogIn className='w-4 h-4 mr-2' />
+                        {t('navbar.logout')}
                       </Button>
                     ) : (
                       <>
