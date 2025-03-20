@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useForm } from '@tanstack/react-form';
-import type { AnyFieldApi } from '@tanstack/react-form';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@tanstack/react-router';
@@ -19,17 +18,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { EyeIcon, EyeOffIcon, UserIcon, MailIcon, KeyIcon } from 'lucide-react';
 import { Loader } from '@/components/Loader.tsx';
-
-// Field error component
-function FieldError({ field }: { field: AnyFieldApi }) {
-  if (!field.state.meta.isTouched || field.state.meta.errors.length === 0) return null;
-
-  return (
-    <p className='text-sm font-medium text-destructive mt-1'>
-      {field.state.meta.errors.join(', ')}
-    </p>
-  );
-}
+import { FieldError } from '@/components/FieldError.tsx';
 
 export default function Register() {
   const { t } = useTranslation();

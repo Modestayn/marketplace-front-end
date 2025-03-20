@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useForm } from '@tanstack/react-form';
-import type { AnyFieldApi } from '@tanstack/react-form';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth.ts';
@@ -13,16 +12,7 @@ import { Loader } from '@/components/Loader';
 import { CreditCardIcon, MailIcon, ShieldIcon, UserIcon } from 'lucide-react';
 import { ProtectedRoute } from '@/providers/ProtectedRoute';
 import { UserService } from '@/services/UserService.ts';
-
-// Field error component
-function FieldError({ field }: { field: AnyFieldApi }) {
-  if (!field.state.meta.isTouched || !field.state.meta.errors?.length) return null;
-
-  // Extract error messages from the Zod error objects
-  const errorMessages = field.state.meta.errors.map((error: { message: string }) => error.message);
-
-  return <p className='text-sm font-medium text-destructive mt-1'>{errorMessages.join(', ')}</p>;
-}
+import { FieldError } from '@/components/FieldError.tsx';
 
 function ProfileForm() {
   const { t } = useTranslation();
