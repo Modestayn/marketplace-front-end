@@ -141,5 +141,13 @@
   "auth": {
     "session_expired": "Your session has expired. Please sign in again.",
     "unauthorized": "You need to be logged in to access this page"
+  },
+  "cart": {
+    "yourCart": "Your Cart ({{itemCount}} items)",
+    "emptyCart": "Your cart is empty",
+    "subtotal": "Subtotal",
+    "viewCart": "View Cart",
+    "checkout": "Checkout",
+    "continueShopping": "Continue shopping"
   }
 }
