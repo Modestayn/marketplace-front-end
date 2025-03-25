@@ -12,8 +12,8 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as RegisterImport } from './routes/register'
+import { Route as ProfileImport } from './routes/profile'
 import { Route as LoginImport } from './routes/login'
-import { Route as CartImport } from './routes/Cart'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
 import { Route as ProductsProductIdImport } from './routes/products/$productId'
@@ -26,15 +26,15 @@ const RegisterRoute = RegisterImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const LoginRoute = LoginImport.update({
-  id: '/login',
-  path: '/login',
+const ProfileRoute = ProfileImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRoute,
 } as any)
 
-const CartRoute = CartImport.update({
-  id: '/Cart',
-  path: '/Cart',
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -67,18 +67,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/Cart': {
-      id: '/Cart'
-      path: '/Cart'
-      fullPath: '/Cart'
-      preLoaderRoute: typeof CartImport
-      parentRoute: typeof rootRoute
-    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileImport
       parentRoute: typeof rootRoute
     }
     '/register': {
@@ -109,8 +109,8 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/Cart': typeof CartRoute
   '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/products': typeof ProductsIndexRoute
@@ -118,8 +118,8 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/Cart': typeof CartRoute
   '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/products': typeof ProductsIndexRoute
@@ -128,8 +128,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/Cart': typeof CartRoute
   '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/products/': typeof ProductsIndexRoute
@@ -139,24 +139,24 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/Cart'
     | '/login'
+    | '/profile'
     | '/register'
     | '/products/$productId'
     | '/products'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/Cart'
     | '/login'
+    | '/profile'
     | '/register'
     | '/products/$productId'
     | '/products'
   id:
     | '__root__'
     | '/'
-    | '/Cart'
     | '/login'
+    | '/profile'
     | '/register'
     | '/products/$productId'
     | '/products/'
@@ -165,8 +165,8 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CartRoute: typeof CartRoute
   LoginRoute: typeof LoginRoute
+  ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
   ProductsProductIdRoute: typeof ProductsProductIdRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
@@ -174,8 +174,8 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CartRoute: CartRoute,
   LoginRoute: LoginRoute,
+  ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
   ProductsProductIdRoute: ProductsProductIdRoute,
   ProductsIndexRoute: ProductsIndexRoute,
@@ -192,8 +192,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/Cart",
         "/login",
+        "/profile",
         "/register",
         "/products/$productId",
         "/products/"
@@ -202,11 +202,11 @@ export const routeTree = rootRoute
     "/": {
       "filePath": "index.tsx"
     },
-    "/Cart": {
-      "filePath": "Cart.tsx"
-    },
     "/login": {
       "filePath": "login.tsx"
+    },
+    "/profile": {
+      "filePath": "profile.tsx"
     },
     "/register": {
       "filePath": "register.tsx"

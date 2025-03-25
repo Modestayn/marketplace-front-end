@@ -1,12 +1,29 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode, useState } from 'react';
+import { AuthProvider } from './auth/AuthProvider.tsx';
 import { CartProvider } from '../context/CartContext';
 
-type QueryProviderProps = {
+type AppProvidersProps = {
   children: ReactNode;
 };
 
-export function QueryProvider({ children }: QueryProviderProps) {
+// Type predicate for API error responses
+type ApiErrorResponse = {
+  status: number;
+  // Add other properties that might be in the response
+};
+
+function isApiError(error: unknown): error is Error & { response: ApiErrorResponse } {
+  return (
+    error instanceof Error &&
+    'response' in error &&
+    typeof error.response === 'object' &&
+    error.response !== null &&
+    'status' in error.response
+  );
+}
+
+export function QueryProvider({ children }: AppProvidersProps) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -14,6 +31,13 @@ export function QueryProvider({ children }: QueryProviderProps) {
           queries: {
             staleTime: 1000 * 60 * 5, // 5 minutes
             refetchOnWindowFocus: false,
+            retry: (failureCount, error) => {
+              // Don't retry on 401 Unauthorized errors
+              if (isApiError(error) && error.response.status === 401) {
+                return false;
+              }
+              return failureCount < 3;
+            },
           },
         },
       }),
@@ -21,7 +45,9 @@ export function QueryProvider({ children }: QueryProviderProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CartProvider>{children}</CartProvider>
+      <AuthProvider>
+        <CartProvider>{children}</CartProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

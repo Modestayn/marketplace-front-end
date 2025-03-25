@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { useForm } from '@tanstack/react-form';
 import { z } from 'zod';
-import { AuthService } from '../services/AuthService';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from '@tanstack/react-router';
+import { useAuth } from '@/hooks/useAuth.ts';
 import {
   Card,
   CardContent,
@@ -16,25 +17,12 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { EyeIcon, EyeOffIcon, UserIcon, MailIcon, KeyIcon } from 'lucide-react';
-import { Link } from '@tanstack/react-router';
-
-// Field error component
-function FieldInfo({ field, customError }: { field: any; customError?: string }) {
-  const hasFieldError = customError !== undefined && customError !== '';
-  const hasValidationError = field.state.meta.isTouched && field.state.meta.errors.length > 0;
-
-  if (!hasFieldError && !hasValidationError) return null;
-
-  const errorMessage = hasFieldError ? customError : field.state.meta.errors.join(', ');
-
-  return <p className='text-sm font-medium text-destructive mt-1'>{errorMessage}</p>;
-}
+import { Loader } from '@/components/Loader.tsx';
+import { FieldError } from '@/components/FieldError.tsx';
 
 export default function Register() {
   const { t } = useTranslation();
-  const [message, setMessage] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [generalError, setGeneralError] = useState<string | null>(null);
+  const { register, isLoading, error: authError } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   // Extract validation schema with translations
@@ -53,26 +41,14 @@ export default function Register() {
     onSubmit: async ({ value }) => {
       try {
         schema.parse(value);
-        const response = await AuthService.register(value);
-        setMessage(response.message);
-        setFieldErrors({});
-        setGeneralError(null);
+        await register({
+          name: value.name,
+          email: value.email,
+          password: value.password,
+        });
       } catch (err) {
-        setMessage(null);
         if (err instanceof z.ZodError) {
-          // Map ZodErrors to their respective fields
-          const errors: Record<string, string> = {};
-          err.errors.forEach((e) => {
-            if (e.path.length > 0) {
-              const fieldName = e.path[0].toString();
-              errors[fieldName] = e.message;
-            }
-          });
-          setFieldErrors(errors);
-          setGeneralError(null);
-        } else if (err instanceof Error) {
-          setGeneralError(err.message);
-          setFieldErrors({});
+          console.error('Validation error:', err.errors);
         }
       }
     },
@@ -81,7 +57,7 @@ export default function Register() {
   const handleTogglePassword = () => setShowPassword((prev) => !prev);
 
   return (
-    <div className='flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-4'>
+    <div className='flex justify-center items-center min-h-[calc(100vh-4.1rem)] bg-gradient-to-br from-indigo-50 to-purple-50 p-4'>
       <Card className='w-full max-w-md shadow-lg'>
         <CardHeader className='space-y-1 text-center'>
           <CardTitle className='text-2xl font-bold text-primary'>{t('register.title')}</CardTitle>
@@ -111,11 +87,11 @@ export default function Register() {
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      className={`pl-9 ${fieldErrors[field.name] || (field.state.meta.isTouched && field.state.meta.errors.length) ? 'border-destructive' : ''}`}
+                      className={`pl-9 ${field.state.meta.isTouched && field.state.meta.errors.length ? 'border-destructive' : ''}`}
                       placeholder={t('register.name.placeholder')}
                     />
                   </div>
-                  <FieldInfo field={field} customError={fieldErrors[field.name]} />
+                  <FieldError field={field} />
                 </div>
               )}
             />
@@ -134,11 +110,11 @@ export default function Register() {
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      className={`pl-9 ${fieldErrors[field.name] || (field.state.meta.isTouched && field.state.meta.errors.length) ? 'border-destructive' : ''}`}
+                      className={`pl-9 ${field.state.meta.isTouched && field.state.meta.errors.length ? 'border-destructive' : ''}`}
                       placeholder={t('register.email.placeholder')}
                     />
                   </div>
-                  <FieldInfo field={field} customError={fieldErrors[field.name]} />
+                  <FieldError field={field} />
                 </div>
               )}
             />
@@ -157,7 +133,7 @@ export default function Register() {
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      className={`pl-9 ${fieldErrors[field.name] || (field.state.meta.isTouched && field.state.meta.errors.length) ? 'border-destructive' : ''}`}
+                      className={`pl-9 ${field.state.meta.isTouched && field.state.meta.errors.length ? 'border-destructive' : ''}`}
                       placeholder={t('register.password.placeholder')}
                     />
                     <Button
@@ -174,31 +150,26 @@ export default function Register() {
                       )}
                     </Button>
                   </div>
-                  <FieldInfo field={field} customError={fieldErrors[field.name]} />
+                  <FieldError field={field} />
                 </div>
               )}
             />
 
-            <Button
-              type='submit'
-              className='w-full'
-              disabled={!form.state.canSubmit || form.state.isSubmitting}
-            >
-              {form.state.isSubmitting
-                ? t('register.submit.creating')
-                : t('register.submit.create')}
+            <Button type='submit' className='w-full' disabled={isLoading || !form.state.canSubmit}>
+              {isLoading ? (
+                <>
+                  <Loader size='sm' className='mr-2' />
+                  {t('register.submit.creating')}
+                </>
+              ) : (
+                t('register.submit.create')
+              )}
             </Button>
           </form>
 
-          {message && (
-            <Alert className='mt-4 border-green-500 text-green-700 bg-green-50'>
-              <AlertDescription>{message}</AlertDescription>
-            </Alert>
-          )}
-
-          {generalError && (
+          {authError && (
             <Alert className='mt-4 border-destructive bg-destructive/10'>
-              <AlertDescription>{generalError}</AlertDescription>
+              <AlertDescription>{authError}</AlertDescription>
             </Alert>
           )}
         </CardContent>

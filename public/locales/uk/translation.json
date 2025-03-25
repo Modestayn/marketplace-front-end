@@ -9,7 +9,14 @@
     "view_all_categories": "Переглянути всі категорії",
     "search_placeholder": "Пошук продуктів...",
     "registerBtn": "Реєстрація",
-    "loginBtn": "Вхід"
+    "loginBtn": "Вхід",
+    "account": {
+      "account": "Мій кабінет",
+      "profile": "Профіль",
+      "settings": "Налаштування",
+      "logout": "Вийти",
+      "orders": "Мої замовлення"
+    }
   },
   "categories": {
     "electronics": {
@@ -35,12 +42,36 @@
   },
   "products": {
     "title": "Продукти",
+    "see_all_products": "Переглянути всі продукти",
     "empty": "Немає доступних продуктів",
     "loading_error": "Не вдалося завантажити продукти",
     "in_stock": "В наявності",
     "out_of_stock": "Немає в наявності",
     "add_to_cart": "Додати до кошика",
     "product_id": "ID продукту"
+  },
+  "login": {
+    "title": "Ласкаво просимо",
+    "description": "Увійдіть до свого облікового запису",
+    "email": {
+      "label": "Електронна пошта",
+      "placeholder": "Ваша електронна пошта",
+      "validation": {
+        "invalid_format": "Неправильний формат електронної пошти"
+      }
+    },
+    "password": {
+      "label": "Пароль",
+      "placeholder": "Ваш пароль",
+      "validation": {
+        "required": "Пароль обов'язковий"
+      }
+    },
+    "forgot_password": "Забули пароль?",
+    "submit": "Увійти",
+    "logging_in": "Вхід...",
+    "register_prompt": "Не маєте облікового запису?",
+    "register_link": "Створіть зараз"
   },
   "register": {
     "title": "Приєднуйтесь до нас",
@@ -56,7 +87,7 @@
       "label": "Електронна пошта",
       "placeholder": "Ваша електронна пошта",
       "validation": {
-        "invalid_format": "Неправильний формат форми"
+        "invalid_format": "Неправильний формат електронної пошти"
       }
     },
     "password": {
@@ -73,6 +104,43 @@
     "login_prompt": "Вже маєте обліковий запис?",
     "login_link": "Увійти",
     "terms": "Реєструючись, ви погоджуєтеся з нашими Умовами використання та Політикою конфіденційності"
+  },
+  "profile": {
+    "title": "Профіль",
+    "personal_info": "Особиста інформація",
+    "personal_info_description": "Оновіть вашу особисту інформацію",
+    "security": "Безпека",
+    "security_description": "Керуйте налаштуваннями безпеки вашого облікового запису",
+    "account_management": "Керування обліковим записом",
+    "account_management_description": "Керуйте налаштуваннями вашого облікового запису",
+    "name": {
+      "label": "Ім'я",
+      "validation": {
+        "min_length": "Ім'я має бути мінімум 3 символи"
+      }
+    },
+    "email": {
+      "label": "Електронна пошта",
+      "validation": {
+        "invalid_format": "Неправильний формат електронної пошти"
+      }
+    },
+    "update": "Оновити профіль",
+    "updating": "Оновлення...",
+    "update_success": "Профіль успішно оновлено",
+    "change_password": "Змінити пароль",
+    "change_password_description": "Оновіть пароль для безпеки вашого облікового запису",
+    "change_password_button": "Змінити пароль",
+    "two_factor": "Двофакторна автентифікація",
+    "two_factor_description": "Додайте додатковий рівень безпеки для вашого облікового запису",
+    "two_factor_button": "Налаштувати 2FA",
+    "delete_account": "Видалити обліковий запис",
+    "delete_account_description": "Після видалення облікового запису шляху назад немає. Будь ласка, будьте впевнені.",
+    "delete_account_button": "Видалити обліковий запис"
+  },
+  "auth": {
+    "session_expired": "Ваша сесія закінчилася. Будь ласка, увійдіть знову.",
+    "unauthorized": "Вам потрібно увійти, щоб отримати доступ до цієї сторінки"
   },
   "cart": {
     "yourCart": "Ваш кошик ({{itemCount}} товарів)",

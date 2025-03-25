@@ -9,7 +9,14 @@
     "view_all_categories": "View all categories",
     "search_placeholder": "Search products...",
     "registerBtn": "Register",
-    "loginBtn": "Login"
+    "loginBtn": "Login",
+    "account": {
+      "account": "My Account",
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Logout",
+      "orders": "My Orders"
+    }
   },
   "categories": {
     "electronics": {
@@ -35,12 +42,36 @@
   },
   "products": {
     "title": "Products",
+    "see_all_products": "See all products",
     "empty": "No products available",
     "loading_error": "Failed to load products",
     "in_stock": "In Stock",
     "out_of_stock": "Out of Stock",
     "add_to_cart": "Add to Cart",
     "product_id": "Product ID"
+  },
+  "login": {
+    "title": "Welcome Back",
+    "description": "Sign in to your account",
+    "email": {
+      "label": "Email",
+      "placeholder": "Your email",
+      "validation": {
+        "invalid_format": "Invalid email format"
+      }
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Your password",
+      "validation": {
+        "required": "Password is required"
+      }
+    },
+    "forgot_password": "Forgot password?",
+    "submit": "Sign In",
+    "logging_in": "Signing in...",
+    "register_prompt": "Don't have an account?",
+    "register_link": "Create one now"
   },
   "register": {
     "title": "Join Us",
@@ -73,6 +104,43 @@
     "login_prompt": "Already have an account?",
     "login_link": "Sign in",
     "terms": "By signing up, you agree to our Terms of Service and Privacy Policy"
+  },
+  "profile": {
+    "title": "Profile",
+    "personal_info": "Personal Information",
+    "personal_info_description": "Update your personal information",
+    "security": "Security",
+    "security_description": "Manage your account security settings",
+    "account_management": "Account Management",
+    "account_management_description": "Manage your account settings",
+    "name": {
+      "label": "Name",
+      "validation": {
+        "min_length": "Name must be at least 3 characters"
+      }
+    },
+    "email": {
+      "label": "Email",
+      "validation": {
+        "invalid_format": "Invalid email format"
+      }
+    },
+    "update": "Update Profile",
+    "updating": "Updating...",
+    "update_success": "Profile updated successfully",
+    "change_password": "Change Password",
+    "change_password_description": "Update your password to keep your account secure",
+    "change_password_button": "Change Password",
+    "two_factor": "Two-Factor Authentication",
+    "two_factor_description": "Add an extra layer of security to your account",
+    "two_factor_button": "Setup 2FA",
+    "delete_account": "Delete Account",
+    "delete_account_description": "Once you delete your account, there is no going back. Please be certain.",
+    "delete_account_button": "Delete Account"
+  },
+  "auth": {
+    "session_expired": "Your session has expired. Please sign in again.",
+    "unauthorized": "You need to be logged in to access this page"
   },
   "cart": {
     "yourCart": "Your Cart ({{itemCount}} items)",
